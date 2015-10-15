@@ -6,12 +6,11 @@ public class TestUI {
 
 	public static void main(String[] args) {
 		JFrame window = new JFrame();
-		window.setTitle("Coucou");
+		window.setTitle("Debug");
 		window.setSize(400, 400);
 		
 		window.setVisible(true);
 		window.add(new RangeSlider(0,50,0,100,0));
-		
 		
 		
 		window.pack();
