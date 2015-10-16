@@ -5,8 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
+import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
 import com.sun.javafx.geom.Rectangle;
 
@@ -18,6 +23,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	public RangeSliderUI(RangeSlider o) {
 		super(o);
 		this.self = o;
+	
 	}
 	
 	// Pour add un rectangle sup.
@@ -41,31 +47,53 @@ public class RangeSliderUI extends BasicSliderUI {
 		
 		Graphics2D g2D = (Graphics2D) g.create();
 		
+		// left cursor
 		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.fillRoundRect(self.getValue(),0,10,20,25,25);
 		
+		//right cursor
 		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.fillRoundRect(self.getUpValue(),0,10,20,25,25);
 		g2D.dispose();
 	}
 	
-//	public void paint_droite(Graphics g) {
-//		
-//		Graphics2D g2D = (Graphics2D) g.create();
-//		
-//		g2D.drawRect(0,0,10,20);
-//		g2D.dispose();
-//	}
-//
-//	
-//	public void paint_gauche(Graphics g) {
-//		
-//		Graphics2D g2D = (Graphics2D) g.create();
-//		
-//		g2D.drawRect(self.getUpValue(), 0,10,20);
-//		g2D.dispose();
-//	}
+	// Redirection vers notre private class pour la gestion d'event
+	@Override
+	protected TrackListener createTrackListener(JSlider slider) {
+		return new RangeSliderEvent();
+	}
 	
-	
-	
+	private class RangeSliderEvent extends TrackListener{
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			super.mouseReleased(e);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			System.out.println("oto");
+			super.mousePressed(e);
+		}
+
+		@Override
+		public boolean shouldScroll(int direction) {
+			// TODO Auto-generated method stub
+			return super.shouldScroll(direction);
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			super.mouseDragged(e);
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+			super.mouseMoved(e);
+		}
+	}
 }

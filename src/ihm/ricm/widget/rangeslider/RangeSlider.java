@@ -22,6 +22,7 @@ public class RangeSlider extends JSlider {
         sliderModel = new DefaultBoundedRangeModel(value, extent, min, max);
         sliderModel.setExtent(extent);
         sliderModel.addChangeListener(changeListener);
+        
         setUI(new RangeSliderUI(this));
         updateUI();
      }
@@ -42,8 +43,15 @@ public class RangeSlider extends JSlider {
 	   return (this.getValue() + this.getExtent());
    }
    
-   //TODO setValue (vu qu'on calcule le slider droite par rapport à celui de gauche, et la valeur de extent...
-   // besoin d'override ?
-   
+   public void setSliderGauche(int n) {
+
+	int old = this.getValue();
+	int new_val = Math.max(0,n-this.getValue());
+	this.setValue(new_val);
+	
+	this.setExtent(new_val-old-getExtent());
+	
+	
+}
 
 }
