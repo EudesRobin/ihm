@@ -17,19 +17,18 @@ import com.sun.javafx.geom.Rectangle;
 
 public class RangeSliderUI extends BasicSliderUI {
 
-	Rectangle sup_droite;
 	RangeSlider self;
-	
+	enum States {IDLE,CLICK_RIGHT_SIDE,CLICK_LEFT_SIDE,CLICK_RECT_RIGHT,CLICK_RECT_LEFT,DRAG_RECT_RIGHT,DRAG_LEFT_RECT,CLICK_MIDDLE,DRAG_MIDDLE};
+	States state;
 	public RangeSliderUI(RangeSlider o) {
 		super(o);
 		this.self = o;
-	
+		state = States.IDLE;
 	}
 	
 	// Pour add un rectangle sup.
 	@Override
 	public void installUI(JComponent c) {
-		//sup_droite = new Rectangle(10,5);
 		super.installUI(c);
 	}
 	
@@ -37,14 +36,11 @@ public class RangeSliderUI extends BasicSliderUI {
 	@Override
 	public void paint(Graphics g, JComponent c) {
 		super.paint(g, c);
-		
-		//paint_gauche(g);
-		//paint_droite(g);
+		// appel à paintThunb dans le super...
 	}
 	
 	@Override
 	public void paintThumb(Graphics g) {
-		
 		Graphics2D g2D = (Graphics2D) g.create();
 		
 		// left cursor
@@ -64,36 +60,88 @@ public class RangeSliderUI extends BasicSliderUI {
 	}
 	
 	private class RangeSliderEvent extends TrackListener{
-
+		int old_x;
+		
+		States getPosition(MouseEvent e) {
+			
+			return States.CLICK_RECT_LEFT;
+		}
+		
+		
+		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			super.mouseReleased(e);
+			switch(state) {
+			case CLICK_LEFT_SIDE:
+				break;
+			case CLICK_MIDDLE:
+				break;
+			case CLICK_RECT_LEFT:
+				
+				break;
+			case CLICK_RECT_RIGHT:
+				break;
+			case CLICK_RIGHT_SIDE:
+				break;
+			case DRAG_LEFT_RECT:
+				state = States.IDLE;
+				break;
+			case DRAG_MIDDLE:
+				break;
+			case DRAG_RECT_RIGHT:
+				break;
+			case IDLE:
+				break;
+			default:
+				break;
+			
+			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("oto");
-			super.mousePressed(e);
-		}
-
-		@Override
-		public boolean shouldScroll(int direction) {
-			// TODO Auto-generated method stub
-			return super.shouldScroll(direction);
+			switch(state) {
+			case IDLE:
+				// où on a cliqué ?
+				state = getPosition(e);
+				old_x=e.getX();
+				break;
+			default:
+				break;
+			}
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			// TODO Auto-generated method stub
-			super.mouseDragged(e);
+			switch(state) {
+			case CLICK_MIDDLE:
+				break;
+			case CLICK_RECT_LEFT:
+//				state = States.DRAG_LEFT_RECT;
+//				if(e.getX()-old_x>0) {
+//					self.setSliderGauche(self.getValue()-1);
+//				}else {
+//					self.setSliderGauche(self.getValue()+1);
+//				}
+//				old_x=e.getX();
+				break;
+			case CLICK_RECT_RIGHT:
+				break;
+			case DRAG_LEFT_RECT:
+//				if(e.getX()-old_x>0) {
+//					self.setSliderGauche(self.getValue()-1);
+//				}else {
+//					self.setSliderGauche(self.getValue()+1);
+//				}
+				break;
+			case DRAG_MIDDLE:
+				break;
+			case DRAG_RECT_RIGHT:
+				break;
+			default:
+				break;
+			}
 		}
 
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			// TODO Auto-generated method stub
-			super.mouseMoved(e);
-		}
 	}
 }
