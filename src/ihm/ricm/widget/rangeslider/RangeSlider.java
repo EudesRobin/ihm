@@ -13,8 +13,8 @@ public class RangeSlider extends JSlider {
 
 	@Override
 	public void updateUI() {
-		//setUI(new RangeSliderUI(this));
-		repaint();
+		setUI(new RangeSliderUI(this));
+		updateLabelUIs();
 	}
 	
    public RangeSlider(int orientation, int extent, int min, int max, int value){
@@ -23,7 +23,7 @@ public class RangeSlider extends JSlider {
         sliderModel.setExtent(extent);
         sliderModel.addChangeListener(changeListener);
         
-        setUI(new RangeSliderUI(this));
+        
         updateUI();
      }
    
