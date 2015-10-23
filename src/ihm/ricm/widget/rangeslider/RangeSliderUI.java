@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
@@ -51,7 +52,7 @@ public class RangeSliderUI extends BasicSliderUI {
 		
 		// middle
 		g2D.setColor(Color.ORANGE);
-		g2D.fillRect(gauche.x,0,droite.x-gauche.x,gauche.height);
+		g2D.fillRect(gauche.x+gauche.width,0,droite.x-gauche.x,gauche.height);
 		
 		// left cursor
 		g2D.setColor(Color.LIGHT_GRAY);
