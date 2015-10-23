@@ -36,8 +36,25 @@ public class RangeSlider extends JSlider {
 	   // la valeur minimale entre
 	   //	l'incrément qu'on prévoit de faire par rapport à la valeur du Slider "de gauche" (le max assure la positivité)
 	   //   la valeur maximale d'un incrément (toujours par rapport au slider "de gauche")
-	   this.setExtent(Math.min(Math.max(0,val-this.getValue()),this.getMaximum()-this.getValue()));
+	   //this.setExtent(Math.min(Math.max(0,val-this.getValue()),this.getMaximum()-this.getValue()));
+		this.getModel().setRangeProperties(this.getModel().getValue()
+				, Math.min(Math.max(0,val-this.getValue()),this.getMaximum()-this.getValue())
+				, 0
+				, 100
+				, true);
    }
+   
+   @Override
+public int getValue() {
+	return super.getValue();
+}
+   
+   @Override
+public void setValue(int n) {
+	super.getModel().setValue(n);
+	
+}
+
    
    public int getUpValue() {
 	   return (this.getValue() + this.getExtent());
@@ -47,9 +64,10 @@ public class RangeSlider extends JSlider {
 
 	int old = this.getValue();
 	int new_val = Math.max(0,n-this.getValue());
-	this.setValue(new_val);
+	this.getModel().setRangeProperties(new_val, new_val-old-getExtent(), 0, 100, true);
+	//setValue(new_val);
 	
-	this.setExtent(new_val-old-getExtent());
+	//this.setExtent(new_val-old-getExtent());
 	
 	
 }

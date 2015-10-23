@@ -46,6 +46,9 @@ public class RangeSliderUI extends BasicSliderUI {
 	public void paintThumb(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g.create();
 		
+		gauche.x = self.getValue();
+		droite.x = self.getUpValue();
+		
 		// middle
 		g2D.setColor(Color.ORANGE);
 		g2D.fillRect(gauche.x,0,droite.x-gauche.x,gauche.height);
@@ -84,41 +87,28 @@ public class RangeSliderUI extends BasicSliderUI {
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			switch(state) {
-			case CLICK_LEFT_SIDE:
-				break;
-			case CLICK_MIDDLE:
-				break;
-			case CLICK_RECT_LEFT:
-				
-				break;
-			case CLICK_RECT_RIGHT:
-				break;
-			case CLICK_RIGHT_SIDE:
-				break;
-			case DRAG_LEFT_RECT:
-				state = States.IDLE;
-				break;
-			case DRAG_MIDDLE:
-				break;
-			case DRAG_RECT_RIGHT:
-				break;
-			case IDLE:
-				break;
-			default:
-				break;
-			
-			}
+			state = States.IDLE;
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			System.out.println("vu");
 			switch(state) {
 			case IDLE:
 				// où on a cliqué ?
 				state = getPosition(e);
-				old_x=e.getX();
+				switch(state){
+				case CLICK_LEFT_SIDE:
+					self.setSliderGauche(e.getX());
+					state = States.IDLE;
+					break;
+				case CLICK_RIGHT_SIDE:
+					self.setSliderDroite(e.getX());
+					state = States.IDLE;
+					break;
+				default:
+					break;
+				}
+		
 				break;
 			default:
 				break;
@@ -129,10 +119,14 @@ public class RangeSliderUI extends BasicSliderUI {
 		public void mouseDragged(MouseEvent e) {
 			switch(state) {
 			case CLICK_MIDDLE:
+				self.setSliderGauche(e.getX());
+				self.setSliderDroite(e.getX());
 				break;
 			case CLICK_RECT_LEFT:
+				self.setSliderGauche(e.getX());
 				break;
 			case CLICK_RECT_RIGHT:
+				self.setSliderDroite(e.getX());
 				break;
 			case DRAG_LEFT_RECT:
 				break;
