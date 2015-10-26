@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
@@ -30,6 +28,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	protected TrackListener createTrackListener(JSlider slider) {
 		return new RangeSliderEvent();
 	}
+	
 	// Pour add un rectangle sup.
 	@Override
 	public void installUI(JComponent c) {
@@ -39,7 +38,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	// pour dessiner nos 2 rectangles...
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		TestUI.setvalUI();
+		TestUI.setvalUI();// On maj les valeurs min/value/extent/max affichée 
 		super.paint(g, c);
 		// appel à paintThunb dans le super...
 	}
@@ -54,10 +53,11 @@ public class RangeSliderUI extends BasicSliderUI {
 		// middle
 		g2D.setColor(Color.ORANGE);
 		g2D.fillRect(gauche.x+gauche.width,gauche.height/4,droite.x-gauche.x,gauche.height/2);
+		
 		// left cursor
 		g2D.setColor(Color.LIGHT_GRAY);
-		//g2D.fillRect(gauche.x, gauche.y, gauche.width, gauche.height);
 		g2D.fillRect(gauche.x, gauche.y, gauche.width, gauche.height);
+		
 		//right cursor
 		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.fillRect(droite.x,droite.y,droite.width,droite.height);
@@ -83,8 +83,6 @@ public class RangeSliderUI extends BasicSliderUI {
 			}
 		}
 
-
-
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			state = States.IDLE;
@@ -92,32 +90,20 @@ public class RangeSliderUI extends BasicSliderUI {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			switch(state) {
-			case IDLE:
-				// où on a cliqué ?
-				state = getPosition(e);
-				System.out.println(state);
-				switch(state){
-				case CLICK_LEFT_SIDE:
+			state = getPosition(e);
+			switch(state){
+			case CLICK_LEFT_SIDE:
+				self.setSliderGauche(e.getX());
+				break;
+			case CLICK_RIGHT_SIDE:
+				self.setSliderDroite(e.getX());
+				break;
+			case CLICK_MIDDLE :
+				// on cherche le bord le plus proche, et on le déplace à la position voulue
+				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
 					self.setSliderGauche(e.getX());
-					state = States.IDLE;
-					break;
-				case CLICK_RIGHT_SIDE:
+				}else {
 					self.setSliderDroite(e.getX());
-					state = States.IDLE;
-					break;
-
-				case CLICK_MIDDLE :
-					// on cherche le bord le plus proche, et on le déplace à la position voulue
-					if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
-						self.setSliderGauche(e.getX());
-					}else {
-						self.setSliderDroite(e.getX());
-					}
-					state = States.IDLE;
-					break;
-				default:
-					break;
 				}
 				break;
 			default:
@@ -129,20 +115,18 @@ public class RangeSliderUI extends BasicSliderUI {
 		public void mouseDragged(MouseEvent e) {
 			switch(state) {
 			case CLICK_MIDDLE:
-				self.setSliderGauche(e.getX());
-				self.setSliderDroite(e.getX());
+				// on cherche le bord le plus proche, et on ajuste le rect voulu
+				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
+					self.setSliderGauche(e.getX());
+				}else {
+					self.setSliderDroite(e.getX());
+				}
 				break;
 			case CLICK_RECT_LEFT:
 				self.setSliderGauche(e.getX());
 				break;
 			case CLICK_RECT_RIGHT:
 				self.setSliderDroite(e.getX());
-				break;
-			case DRAG_LEFT_RECT:
-				break;
-			case DRAG_MIDDLE:
-				break;
-			case DRAG_RECT_RIGHT:
 				break;
 			default:
 				break;
