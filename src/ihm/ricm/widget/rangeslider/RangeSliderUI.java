@@ -22,8 +22,8 @@ public class RangeSliderUI extends BasicSliderUI {
 		super(o);
 		this.self = o;
 		state = States.IDLE;
-		gauche = new Rectangle(self.getValue(),0,10,20);
-		droite = new Rectangle(self.getUpValue(),0,10,20);	
+		gauche = new Rectangle(self.getValue(),0,TestUI.rect_width,TestUI.rect_height);
+		droite = new Rectangle(self.getUpValue(),0,TestUI.rect_width,TestUI.rect_height);	
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	// pour dessiner nos 2 rectangles...
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		ihm.ricm.widget.rangeslider.TestUI.setvalUI();
+		TestUI.setvalUI();
 		super.paint(g, c);
 		// appel à paintThunb dans le super...
 	}
@@ -53,12 +53,11 @@ public class RangeSliderUI extends BasicSliderUI {
 		
 		// middle
 		g2D.setColor(Color.ORANGE);
-		g2D.fillRect(gauche.x+gauche.width,0,droite.x-gauche.x,gauche.height);
-		
+		g2D.fillRect(gauche.x+gauche.width,gauche.height/4,droite.x-gauche.x,gauche.height/2);
 		// left cursor
 		g2D.setColor(Color.LIGHT_GRAY);
+		//g2D.fillRect(gauche.x, gauche.y, gauche.width, gauche.height);
 		g2D.fillRect(gauche.x, gauche.y, gauche.width, gauche.height);
-		
 		//right cursor
 		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.fillRect(droite.x,droite.y,droite.width,droite.height);
@@ -69,7 +68,6 @@ public class RangeSliderUI extends BasicSliderUI {
 
 	
 	private class RangeSliderEvent extends TrackListener{
-		int old_x;
 		
 		States getPosition(MouseEvent e) {
 			if(droite.contains(e.getPoint())){
