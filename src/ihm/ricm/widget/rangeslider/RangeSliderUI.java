@@ -25,7 +25,7 @@ public class RangeSliderUI extends BasicSliderUI {
 		gauche = new Rectangle(self.getValue(),0,TestUI.rect_width,TestUI.rect_height);
 		droite = new Rectangle(self.getUpValue(),0,TestUI.rect_width,TestUI.rect_height);	
 	}
-	
+
 	@Override
 	protected TrackListener createTrackListener(JSlider slider) {
 		return new RangeSliderEvent();
@@ -35,7 +35,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	public void installUI(JComponent c) {
 		super.installUI(c);
 	}
-	
+
 	// pour dessiner nos 2 rectangles...
 	@Override
 	public void paint(Graphics g, JComponent c) {
@@ -43,14 +43,14 @@ public class RangeSliderUI extends BasicSliderUI {
 		super.paint(g, c);
 		// appel à paintThunb dans le super...
 	}
-	
+
 	@Override
 	public void paintThumb(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g.create();
-		
+
 		gauche.x = self.getValue();
 		droite.x = self.getUpValue();
-		
+
 		// middle
 		g2D.setColor(Color.ORANGE);
 		g2D.fillRect(gauche.x+gauche.width,gauche.height/4,droite.x-gauche.x,gauche.height/2);
@@ -61,14 +61,14 @@ public class RangeSliderUI extends BasicSliderUI {
 		//right cursor
 		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.fillRect(droite.x,droite.y,droite.width,droite.height);
-		
-		
+
+
 		g2D.dispose();
 	}
 
-	
+
 	private class RangeSliderEvent extends TrackListener{
-		
+
 		States getPosition(MouseEvent e) {
 			if(droite.contains(e.getPoint())){
 				return States.CLICK_RECT_RIGHT;
@@ -82,9 +82,9 @@ public class RangeSliderUI extends BasicSliderUI {
 				return States.CLICK_MIDDLE;
 			}
 		}
-		
-		
-		
+
+
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			state = States.IDLE;
@@ -106,10 +106,19 @@ public class RangeSliderUI extends BasicSliderUI {
 					self.setSliderDroite(e.getX());
 					state = States.IDLE;
 					break;
+
+				case CLICK_MIDDLE :
+					if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
+						self.setSliderGauche(e.getX());
+						state = States.IDLE;
+					}else {
+						self.setSliderDroite(e.getX());
+						state = States.IDLE;
+					}
+					break;
 				default:
 					break;
 				}
-		
 				break;
 			default:
 				break;
