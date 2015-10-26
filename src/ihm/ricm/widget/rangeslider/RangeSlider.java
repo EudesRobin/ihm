@@ -22,18 +22,7 @@ public class RangeSlider extends JSlider {
 		updateLabelUIs();
 	}
 
-	/**
-	 * Set la val supérieur du RangeSlider
-	 * @param val valeur souhaité pour la valeur supérieur du RangeSlider
-	 */
-	public void setSliderDroite(int val) {
-		// Cela revient à calculer une valeur d'extent, compte tenu des contraintes du slider :
-		// la valeur minimale entre
-		//	l'incrément qu'on prévoit de faire par rapport à la valeur du Slider "de gauche" (le max assure la positivité)
-		//   la valeur maximale d'un incrément (toujours par rapport au slider "de gauche")
-		this.setExtent(Math.min(Math.max(0,val-this.getValue()),this.getMaximum()-this.getValue()));
 
-	}
 
 	/**
 	 * Rien de spé ici.
@@ -67,12 +56,33 @@ public class RangeSlider extends JSlider {
 	public void setSliderGauche(int n) {
 		int old = this.getValue();
 		
-		// on s'assure que la nouvelle valeur soit inférieur au rect droite, et supérieur au min.
-		int new_val = Math.min(Math.max(getMinimum(),n),getUpValue());
+		/* on s'assure que la nouvelle valeur soit inférieur au rect droite, et supérieur au min.
+		* remarque : 
+		* - TestUI.rect_width  empeche les 2 rectangles de "fusionner" à l'affichage :)
+		*/
+		
+		int new_val = Math.min(Math.max(getMinimum(),n),getUpValue()-TestUI.rect_width);
 		int new_extent = old-new_val+getExtent();
 		
 		// On est obligé d'appeler cette méthode, vu qu'on a override setValue ;)
 		this.getModel().setRangeProperties(new_val,new_extent,getMinimum(),getMaximum(),getValueIsAdjusting());
+	}
+	
+	/**
+	 * Set la val supérieur du RangeSlider
+	 * @param val valeur souhaité pour la valeur supérieur du RangeSlider
+	 */
+	public void setSliderDroite(int val) {
+		/* Cela revient à calculer une valeur d'extent, compte tenu des contraintes du slider :
+		* la valeur minimale entre
+		* l'incrément qu'on prévoit de faire par rapport à la valeur du Slider "de gauche" (le max assure la positivité)
+		* la valeur maximale d'un incrément (toujours par rapport au slider "de gauche")
+		* 
+		* remarque : 
+		* +TestUI.rect_width empeche les 2 rectangles de "fusionner" à l'affichage :)
+		*/ 
+		this.setExtent(Math.min(Math.max(0,val-getValue())+TestUI.rect_width,getMaximum()-getValue()));
+
 	}
 
 }
