@@ -14,7 +14,7 @@ public class RangeSliderUI extends BasicSliderUI {
 
 	private Rectangle gauche, droite;
 	RangeSlider self;
-	enum States {IDLE,CLICK_RIGHT_SIDE,CLICK_LEFT_SIDE,CLICK_RECT_RIGHT,CLICK_RECT_LEFT,DRAG_RECT_RIGHT,DRAG_LEFT_RECT,CLICK_MIDDLE,DRAG_MIDDLE};
+	enum States {IDLE,CLICK_RIGHT_SIDE,CLICK_LEFT_SIDE,CLICK_MIDDLE};
 	States state;
 	public RangeSliderUI(RangeSlider o) {
 		super(o);
