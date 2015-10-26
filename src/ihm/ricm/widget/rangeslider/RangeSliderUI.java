@@ -96,6 +96,7 @@ public class RangeSliderUI extends BasicSliderUI {
 			case IDLE:
 				// où on a cliqué ?
 				state = getPosition(e);
+				System.out.println(state);
 				switch(state){
 				case CLICK_LEFT_SIDE:
 					self.setSliderGauche(e.getX());

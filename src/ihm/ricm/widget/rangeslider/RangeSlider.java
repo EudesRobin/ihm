@@ -66,8 +66,13 @@ public class RangeSlider extends JSlider {
 	 */
 	public void setSliderGauche(int n) {
 		int old = this.getValue();
-		int new_val = Math.max(0,n-this.getValue());
-		this.getModel().setRangeProperties(new_val, old-new_val+getExtent(), 0, 100, true);
+		
+		// on s'assure que la nouvelle valeur soit inférieur au rect droite, et supérieur au min.
+		int new_val = Math.min(Math.max(getMinimum(),n),getUpValue());
+		int new_extent = old-new_val+getExtent();
+		
+		// On est obligé d'appeler cette méthode, vu qu'on a override setValue ;)
+		this.getModel().setRangeProperties(new_val,new_extent,getMinimum(),getMaximum(),getValueIsAdjusting());
 	}
 
 }
