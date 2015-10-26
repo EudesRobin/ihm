@@ -108,13 +108,13 @@ public class RangeSliderUI extends BasicSliderUI {
 					break;
 
 				case CLICK_MIDDLE :
+					// on cherche le bord le plus proche, et on le déplace à la position voulue
 					if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
 						self.setSliderGauche(e.getX());
-						state = States.IDLE;
 					}else {
 						self.setSliderDroite(e.getX());
-						state = States.IDLE;
 					}
+					state = States.IDLE;
 					break;
 				default:
 					break;
