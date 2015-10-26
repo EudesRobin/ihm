@@ -39,6 +39,7 @@ public class RangeSliderUI extends BasicSliderUI {
 	// pour dessiner nos 2 rectangles...
 	@Override
 	public void paint(Graphics g, JComponent c) {
+		ihm.ricm.widget.rangeslider.TestUI.setvalUI();
 		super.paint(g, c);
 		// appel à paintThunb dans le super...
 	}
