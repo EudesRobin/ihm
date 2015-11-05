@@ -15,7 +15,7 @@ public class RangeSlider extends JSlider {
 
 		updateUI();
 	}
-	
+
 	@Override
 	public void updateUI() {
 		setUI(new RangeSliderUI(this));
@@ -35,10 +35,10 @@ public class RangeSlider extends JSlider {
 	/**
 	 * On override, redirection vers notre fonction, pour set le rect gauche.
 	 */
-	@Override
-	public void setValue(int n) {
-		setSliderGauche(n);
-	}
+	//	@Override
+	//	public void setValue(int n) {
+	//		setSliderGauche(n);
+	//	}
 
 
 	/**
@@ -55,34 +55,43 @@ public class RangeSlider extends JSlider {
 	 */
 	public void setSliderGauche(int n) {
 		int old = this.getValue();
-		
+
 		/* on s'assure que la nouvelle valeur soit inférieur au rect droite, et supérieur au min.
-		* remarque : 
-		* - TestUI.rect_width  empeche les 2 rectangles de "fusionner" à l'affichage :)
-		*/
-		
+		 * remarque : 
+		 * - TestUI.rect_width  empeche les 2 rectangles de "fusionner" à l'affichage :)
+		 */
+
 		int new_val = Math.min(Math.max(getMinimum(),n),getUpValue()-TestUI.rect_width);
 		int new_extent = old-new_val+getExtent();
-		
+
 		// On est obligé d'appeler cette méthode, vu qu'on a override setValue ;)
 		this.getModel().setRangeProperties(new_val,new_extent,getMinimum(),getMaximum(),getValueIsAdjusting());
 	}
-	
+
 	/**
 	 * Set la val supérieur du RangeSlider
 	 * @param val valeur souhaité pour la valeur supérieur du RangeSlider
 	 */
 	public void setSliderDroite(int val) {
 		/* Cela revient à calculer une valeur d'extent, compte tenu des contraintes du slider :
-		* la valeur minimale entre
-		* l'incrément qu'on prévoit de faire par rapport à la valeur du Slider "de gauche" (le max assure la positivité)
-		* la valeur maximale d'un incrément (toujours par rapport au slider "de gauche")
-		* 
-		* remarque : 
-		* +TestUI.rect_width empeche les 2 rectangles de "fusionner" à l'affichage :)
-		*/ 
-		this.setExtent(Math.min(Math.max(0,val-getValue())+TestUI.rect_width,getMaximum()-getValue()));
+		 * la valeur minimale entre
+		 * l'incrément qu'on prévoit de faire par rapport à la valeur du Slider "de gauche" (le max assure la positivité)
+		 * la valeur maximale d'un incrément (toujours par rapport au slider "de gauche")
+		 * 
+		 * remarque : 
+		 * +TestUI.rect_width empeche les 2 rectangles de "fusionner" à l'affichage :)
+		 */ 
+		//this.setExtent(Math.min(Math.max(0,val-getValue())+TestUI.rect_width,getMaximum()-getValue()));
+		if (this.getValue() + TestUI.rect_width <= val){
+			this.setExtent(val - getValue());
+		}
+		else{
+			this.setExtent(TestUI.rect_width);
+		}
+	}
 
+	public void moveRange(int offset){
+		this.setValue(this.getValue() + offset);
 	}
 
 }

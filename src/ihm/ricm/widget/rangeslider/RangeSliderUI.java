@@ -16,6 +16,9 @@ public class RangeSliderUI extends BasicSliderUI {
 	RangeSlider self;
 	enum States {IDLE,CLICK_RIGHT_SIDE,CLICK_LEFT_SIDE,CLICK_MIDDLE,CLICK_RECT_LEFT,CLICK_RECT_RIGHT};
 	States state;
+	
+	private int oldValue = 0;
+	
 	public RangeSliderUI(RangeSlider o) {
 		super(o);
 		this.self = o;
@@ -39,8 +42,9 @@ public class RangeSliderUI extends BasicSliderUI {
 	@Override
 	public void paint(Graphics g, JComponent c) {
 		TestUI.setvalUI();// On maj les valeurs min/value/extent/max affichée 
+//		super.paint(g, c);
+// appel à paintThunb dans le super...
 		super.paint(g, c);
-		// appel à paintThunb dans le super...
 	}
 
 	@Override
@@ -100,11 +104,12 @@ public class RangeSliderUI extends BasicSliderUI {
 				break;
 			case CLICK_MIDDLE :
 				// on cherche le bord le plus proche, et on le déplace à la position voulue
-				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
-					self.setSliderGauche(e.getX());
-				}else {
-					self.setSliderDroite(e.getX());
-				}
+//				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
+//					self.setSliderGauche(e.getX());
+//				}else {
+//					self.setSliderDroite(e.getX());
+//				}
+				oldValue = e.getX();
 				break;
 			default:
 				break;
@@ -116,11 +121,15 @@ public class RangeSliderUI extends BasicSliderUI {
 			switch(state) {
 			case CLICK_MIDDLE:
 				// on cherche le bord le plus proche, et on ajuste le rect voulu
-				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
-					self.setSliderGauche(e.getX());
-				}else {
-					self.setSliderDroite(e.getX());
-				}
+//				if((e.getX()-gauche.x)<((droite.x-gauche.x)/2)) {
+//					self.setSliderGauche(e.getX());
+//				}else {
+//					self.setSliderDroite(e.getX());
+//				}
+				int newValue = e.getX();
+				int offset = newValue - oldValue;
+				self.moveRange(offset);
+				oldValue = newValue;
 				break;
 			case CLICK_RECT_LEFT:
 				self.setSliderGauche(e.getX());
